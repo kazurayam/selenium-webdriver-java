@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+
 public class HelloWorldChromeJUnit4Test {
 
     static final Logger log = getLogger(lookup().lookupClass());
@@ -39,6 +40,8 @@ public class HelloWorldChromeJUnit4Test {
     @BeforeClass
     public static void setupClass() {
         WebDriverManager.chromedriver().setup();
+        Object result = org.openqa.selenium.remote.http.HttpClient.Factory.create("jdk-http-client");
+        System.out.println("Factory : " + result.getClass().getName());
     }
 
     @Before

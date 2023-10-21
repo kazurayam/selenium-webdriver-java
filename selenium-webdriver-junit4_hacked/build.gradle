@@ -1,0 +1,89 @@
+plugins {
+    id "java"
+}
+
+compileTestJava {
+    sourceCompatibility = 17
+    targetCompatibility = 17
+    options.compilerArgs += "-parameters"
+}
+
+test {
+    useJUnit() {
+        if (project.hasProperty("groups")) {
+            includeCategories "$groups"
+        }
+        if (project.hasProperty("excludedGroups")) {
+            excludeCategories "$excludedGroups"
+        }
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+
+    systemProperties System.properties
+
+    if (project.hasProperty("excludeTests")) {
+        "$excludeTests".split(",").each { excludeTests ->
+            exclude excludeTests
+        }
+    }
+
+    if (project.hasProperty("parallel")) {
+        maxParallelForks = Runtime.runtime.availableProcessors()
+    }
+
+    ext.failedTests = []
+
+    tasks.withType(Test) {
+        afterTest { TestDescriptor descriptor, TestResult result ->
+            if(result.resultType == org.gradle.api.tasks.testing.TestResult.ResultType.FAILURE) {
+                failedTests << ["${descriptor.className}::${descriptor.name}"]
+            }
+        }
+    }
+
+    gradle.buildFinished {
+        if(!failedTests.empty){
+            println "Failed test(s) for ${project.name}:"
+            failedTests.each { failedTest ->
+                println failedTest
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+ext {
+    slf4jVersion = "2.0.9"
+    logbackVersion = "1.4.11"
+
+    seleniumVersion = "4.14.1"
+    //seleniumVersion  = "4.13.0"
+
+    junit4Version = "4.13.2"
+    assertjVersion = "3.24.2"
+    wdmVersion = "5.5.3"
+}
+
+dependencies {
+    implementation("org.slf4j:slf4j-api:${slf4jVersion}")
+    implementation("ch.qos.logback:logback-classic:${logbackVersion}")
+
+    testImplementation("org.seleniumhq.selenium:selenium-java:${seleniumVersion}")
+    testImplementation("junit:junit:${junit4Version}")
+    testImplementation("org.assertj:assertj-core:${assertjVersion}")
+    testImplementation("io.github.bonigarcia:webdrivermanager:${wdmVersion}")
+
+}
+
+
+
