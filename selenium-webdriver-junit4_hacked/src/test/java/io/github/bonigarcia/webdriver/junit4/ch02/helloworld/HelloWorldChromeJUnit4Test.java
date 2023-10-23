@@ -16,10 +16,7 @@
  */
 package io.github.bonigarcia.webdriver.junit4.ch02.helloworld;
 
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.slf4j.LoggerFactory.getLogger;
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,8 +25,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.slf4j.Logger;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class HelloWorldChromeJUnit4Test {
 
@@ -43,17 +40,6 @@ public class HelloWorldChromeJUnit4Test {
         Object result = org.openqa.selenium.remote.http.HttpClient.Factory.create("jdk-http-client");
         System.out.println("Factory : " + result.getClass().getName());
     }
-
-    @Before
-    public void setup() {
-        driver = new ChromeDriver();
-    }
-
-    @After
-    public void teardown() {
-        driver.quit();
-    }
-
     @Test
     public void test() {
         /*
@@ -63,6 +49,16 @@ public class HelloWorldChromeJUnit4Test {
         log.debug("The title of {} is {}", sutUrl, title);
         assertThat(title).isEqualTo("Hands-On Selenium WebDriver with Java");
          */
+    }
+
+    @Before
+    public void setup() {
+        driver = new ChromeDriver();
+    }
+
+    @After
+    public void teardown() {
+        driver.quit();
     }
 
 }
