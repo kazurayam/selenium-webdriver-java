@@ -22,7 +22,7 @@ public class ProjectDirectoryResolverTest {
 
     @Test
     public void test_getProjectDirViaClasspath() {
-        Path p = ProjectDirectoryResolver.getProjectDirViaClasspath(HelloWorldChromeJUnit4Test.class);
+        Path p = new ProjectDirectoryResolver().getProjectDirViaClasspath(HelloWorldChromeJUnit4Test.class);
         assertThat(p).isNotNull().exists();
         assertThat(p.getFileName().toString())
                 .isEqualTo("selenium-webdriver-junit4");

@@ -12,12 +12,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * ProjectDirectoryResolver resolves the project's directory based on the classpath
+ * of a JVM class you are developing.
+ *
+ * The following quote from
+ * https://discuss.gradle.org/t/how-do-i-set-the-working-directory-for-testng-in-a-multi-project-gradle-build/7379/7
+ * explains what I wanted to do.
+ *
+ * <blockquote>
+ *     <p>luke_daley Gradle Employee Nov '13</p>
+ *
+ *     <p>Loading from the filesystem using relative paths during unit tests is problematic
+ *     because different environments will set a different working directory for the test process.
+ *     For example, Gradle uses the projects directory while IntelliJ uses the directory of the root project.</p>
+ *
+ *     <p>The only really safe way to solve this problem is to load via the classpath.
+ *     Is this a possibility for your scenario?</p>
+ * </blockquote>
+ */
 public class ProjectDirectoryResolver {
 
     private static final Logger log = LoggerFactory.getLogger(ProjectDirectoryResolver.class);
 
-    private ProjectDirectoryResolver() {}
+    private List<List<String>> sublistPatterns;
+
+    public ProjectDirectoryResolver() {
+        this.sublistPatterns = new ArrayList<>();
+        sublistPatterns.add(Arrays.asList("build", "classes", "java", "test"));  // Gradle
+        sublistPatterns.add(Arrays.asList("target", "test-classes"));   // Maven
+    }
+
+    /**
+     *
+     * @param sublistPattern e.g, ["bin", "groovy"], ["bin", "keyword"], ["bin", "lib"], ["bin", "listener"], ["bin", "testcase"]
+     */
+    public void addSublistPattern(List<String> sublistPattern) {
+        Objects.requireNonNull(sublistPattern);
+        if (sublistPattern.isEmpty()) {
+            throw new IllegalArgumentException("sublistPattern must not be null");
+        }
+        this.sublistPatterns.add(sublistPattern);
+    }
 
     /**
      * returns the Path in which the class binary of
@@ -27,7 +65,7 @@ public class ProjectDirectoryResolver {
      * e.g, "/Users/somebody/selenium-webdriver-java/selenium-webdriver-junit4/target/test-classes/" when built by Maven
      *
      */
-    public static Path getCodeSourceAsPath(Class clazz) {
+    public static final Path getCodeSourceAsPath(Class clazz) {
         CodeSource codeSource = clazz.getProtectionDomain().getCodeSource();
         URL url = codeSource.getLocation();
         try {
@@ -60,24 +98,21 @@ public class ProjectDirectoryResolver {
      * of the TestHelper class.
      * Then we can get the Path value of the project directory properly.
      */
-    public static Path getProjectDirViaClasspath(Class clazz) {
+    public Path getProjectDirViaClasspath(Class clazz) {
         Path codeSourcePath = ProjectDirectoryResolver.getCodeSourceAsPath(clazz);
         // e.g. "/Users/myname/oreilly/selenium-webdriver-java/selenium-webdriver-junit4/build/classes/java/test/com/kazurayam/webdriver/TestHelper.class"
         List<String> nameElements = toNameElements(codeSourcePath);
         StringSequence ss = new StringSequence(nameElements);
-        int indexOfBuildDir =
-                ss.indexOfSubsequence(Arrays.asList("build", "classes", "java", "test"));
-        int indexOfTargetDir =
-                ss.indexOfSubsequence(Arrays.asList("target", "test-classes"));
         int boundary = -1;
-        if (indexOfBuildDir > 0) {
-            // project is built by Gradle
-            boundary = indexOfBuildDir;
-        } else if (indexOfTargetDir > 0) {
-            // project is built by Maven
-            boundary = indexOfTargetDir;
-        } else {
-            throw new IllegalStateException("unable to find the project directory via classpath");
+        for (List<String> sublistPattern : this.sublistPatterns) {
+            int indexOfBuildDir = ss.indexOfSubsequence(sublistPattern);
+            if (indexOfBuildDir > 0) {
+                boundary = indexOfBuildDir;
+                break;
+            }
+        }
+        if (boundary == -1) {
+            throw new IllegalStateException("unable to resolve the project directory via classpath");
         }
         // build the project dir to return as the result
         Path w = Paths.get("/");
