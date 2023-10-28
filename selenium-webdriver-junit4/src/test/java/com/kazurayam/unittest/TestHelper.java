@@ -19,7 +19,7 @@ public class TestHelper {
     private String outputDirName;
 
     public TestHelper(Class clazz) {
-        projectDir = ProjectDirectoryResolver.getProjectDirViaClasspath(clazz);
+        projectDir = new ProjectDirectoryResolver().getProjectDirViaClasspath(clazz);
         outputDirName = DEFAULT_OUTPUT_DIRNAME;
     }
 
