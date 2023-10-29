@@ -18,9 +18,10 @@ package io.github.bonigarcia.webdriver.junit4.ch09.performance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
+import com.kazurayam.unittest.TestHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,8 +62,8 @@ public class HarCreatorJUnit4Test {
     @After
     public void teardown() throws IOException {
         Har har = proxy.getHar();
-        File harFile = new File("login.har");
-        har.writeTo(harFile);
+        Path harFile = new TestHelper(this.getClass()).resolveOutput("login.har");
+        har.writeTo(harFile.toFile());
 
         proxy.stop();
         driver.quit();
