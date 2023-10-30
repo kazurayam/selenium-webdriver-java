@@ -38,7 +38,8 @@ public class HelloWorldFirefoxJUnit4Test {
 
     @BeforeClass
     public static void setupClass() {
-        WebDriverManager.firefoxdriver().setup();
+        //WebDriverManager.firefoxdriver().setup();
+        WebDriverManager.firefoxdriver().useMirror().setup();
     }
 
     @Before
