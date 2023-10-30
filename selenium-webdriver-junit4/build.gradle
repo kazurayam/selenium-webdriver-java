@@ -72,6 +72,7 @@ repositories {
     maven {
        url "https://plugins.gradle.org/m2/"
     }
+    mavenLocal()
 }
 
 ext {
@@ -97,6 +98,8 @@ ext {
     springBootVersion = "3.1.4"
     appiumVersion = "9.0.0"
     restAssuredVersion = "5.3.1"
+
+    unittesthelperVersion = "0.1.0"
 }
 
 dependencies {
@@ -144,4 +147,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-devtools-v114
     testImplementation 'org.seleniumhq.selenium:selenium-devtools-v114:4.12.1'
+
+    testImplementation("com.kazurayam:unittest-helper:0.1.0")
 }
