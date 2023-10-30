@@ -1,37 +1,26 @@
 package io.github.bonigarcia.webdriver.junit4.ch02.helloworld;
 
-import java.io.IOException;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.slf4j.Logger;
-
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.slf4j.LoggerFactory.getLogger;
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.slf4j.LoggerFactory.getLogger;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.slf4j.Logger;
-
+import com.kazurayam.unittest.TestHelper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.Proxy;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.slf4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.slf4j.LoggerFactory.getLogger;
 
 
 public class HelloWorldFirefoxWithHARTest {
@@ -63,7 +52,10 @@ public class HelloWorldFirefoxWithHARTest {
     @After
     public void teardown() throws IOException {
         Har har = proxy.getHar();
-        File harFile = new TestHelper.
+        File harFile = new TestHelper(this.getClass()).resolveOutput("HelloWorldFirefox.har").toFile();
+        har.writeTo(harFile);
+
+        proxy.stop();
         driver.quit();
     }
 
