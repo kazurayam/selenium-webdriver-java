@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.io.IOException;
 
+import com.kazurayam.unittest.TestHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +62,8 @@ public class HarCreatorJUnit4Test {
     @After
     public void teardown() throws IOException {
         Har har = proxy.getHar();
-        File harFile = new File("login.har");
+        File harFile = new TestHelper(this.getClass())
+                .resolveOutput("login.har").toFile();
         har.writeTo(harFile);
 
         proxy.stop();
