@@ -60,7 +60,7 @@ public class MyEventListener implements WebDriverListener {
         String screenshotFileName = String.format("%s-%s.png",
                 dateFormat.format(today), sessionId.toString());
         Path destination =
-                new TestHelper(MyEventListener.class)
+                new TestHelper(this.getClass())
                         .resolveOutput(screenshotFileName);
 
         try {
