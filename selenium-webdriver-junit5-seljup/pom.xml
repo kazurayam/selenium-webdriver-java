@@ -35,7 +35,7 @@
         <spring-boot.version>3.1.4</spring-boot.version>
         <appium.version>9.0.0</appium.version>
         <rest-assured.version>5.3.2</rest-assured.version>
-        <unittest-helper.version>0.1.0</unittest-helper.version>
+        <unittest-helper.version>0.1.1</unittest-helper.version>
 
         <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 
@@ -286,7 +286,7 @@
         <dependency>
             <groupId>com.kazurayam.</groupId>
             <artifactId>unittest-helper</artifactId>
-            <version>0.1.0</version>
+            <version>${unittest-helper.version}</version>
         </dependency>
     </dependencies>
 

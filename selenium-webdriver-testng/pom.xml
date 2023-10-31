@@ -241,7 +241,7 @@
         <dependency>
             <groupId>com.kazurayam.</groupId>
             <artifactId>unittest-helper</artifactId>
-            <version>0.1.0</version>
+            <version>${unittest-helper.version}</version>
         </dependency>
     </dependencies>
 
