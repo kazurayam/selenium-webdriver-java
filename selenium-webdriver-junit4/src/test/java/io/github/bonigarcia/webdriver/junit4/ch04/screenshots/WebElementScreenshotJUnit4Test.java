@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.kazurayam.unittest.TestHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +62,8 @@ public class WebElementScreenshotJUnit4Test {
 
         WebElement form = driver.findElement(By.tagName("form"));
         File screenshot = form.getScreenshotAs(OutputType.FILE);
-        Path destination = Paths.get("webelement-screenshot.png");
+        Path destination = new TestHelper(this.getClass())
+                .resolveOutput("webelement-screenshot.png");
         Files.move(screenshot.toPath(), destination, REPLACE_EXISTING);
 
         assertThat(destination).exists();
