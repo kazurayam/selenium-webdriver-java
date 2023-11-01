@@ -62,8 +62,13 @@ public class WebElementScreenshotJUnit4Test {
 
         WebElement form = driver.findElement(By.tagName("form"));
         File screenshot = form.getScreenshotAs(OutputType.FILE);
+<<<<<<< Updated upstream
         Path destination = new TestHelper(this.getClass())
                 .resolveOutput("webelement-screenshot.png");
+=======
+        Path destination =
+                new TestHelper(this.getClass()).resolveOutput("webelement-screenshot.png");
+>>>>>>> Stashed changes
         Files.move(screenshot.toPath(), destination, REPLACE_EXISTING);
 
         assertThat(destination).exists();
