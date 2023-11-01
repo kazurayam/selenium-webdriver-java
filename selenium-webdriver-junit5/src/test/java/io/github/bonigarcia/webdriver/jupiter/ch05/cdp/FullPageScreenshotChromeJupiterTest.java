@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.Optional;
 
+import com.kazurayam.unittest.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +79,9 @@ class FullPageScreenshotChromeJupiterTest {
                                 contentSize.getHeight(), 1)),
                         Optional.empty(), Optional.of(true),
                         Optional.of(false)));
-        Path destination = Paths.get("fullpage-screenshot-chrome.png");
+        Path destination =
+                new TestHelper(this.getClass())
+                        .resolveOutput("fullpage-screenshot-chrome.png");
         Files.write(destination, Base64.getDecoder().decode(screenshotBase64));
 
         assertThat(destination).exists();
