@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.io.IOException;
 
+import com.kazurayam.unittest.TestHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
@@ -35,6 +36,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import java.nio.file.Path;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -42,8 +44,15 @@ public class DownloadHttpClientJUnit4Test {
 
     WebDriver driver;
 
+    Path targetFolder;
+
     @Before
     public void setup() {
+        targetFolder =
+                new TestHelper(this.getClass())
+                        .getProjectDirViaClasspath()
+                        .resolve("test-output/" + this.getClass().getSimpleName());
+
         driver = WebDriverManager.chromedriver().create();
     }
 
@@ -58,12 +67,12 @@ public class DownloadHttpClientJUnit4Test {
                 "https://bonigarcia.dev/selenium-webdriver-java/download.html");
 
         WebElement pngLink = driver.findElement(By.xpath("(//a)[2]"));
-        File pngFile = new File(".", "webdrivermanager.png");
+        File pngFile = targetFolder.resolve("webdrivermanager.png").toFile();
         download(pngLink.getAttribute("href"), pngFile);
         assertThat(pngFile).exists();
 
         WebElement pdfLink = driver.findElement(By.xpath("(//a)[3]"));
-        File pdfFile = new File(".", "webdrivermanager.pdf");
+        File pdfFile = targetFolder.resolve( "webdrivermanager.pdf").toFile();
         download(pdfLink.getAttribute("href"), pdfFile);
         assertThat(pdfFile).exists();
     }
