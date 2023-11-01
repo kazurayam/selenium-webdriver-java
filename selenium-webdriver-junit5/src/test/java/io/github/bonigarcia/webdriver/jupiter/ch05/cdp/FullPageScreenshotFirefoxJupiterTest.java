@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 
+import com.kazurayam.unittest.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +61,9 @@ class FullPageScreenshotFirefoxJupiterTest {
 
         byte[] imageBytes = ((FirefoxDriver) driver)
                 .getFullPageScreenshotAs(OutputType.BYTES);
-        Path destination = Paths.get("fullpage-screenshot-firefox.png");
+        Path destination =
+                new TestHelper(this.getClass())
+                        .resolveOutput("fullpage-screenshot-firefox.png");
         Files.write(destination, imageBytes);
 
         assertThat(destination).exists();
