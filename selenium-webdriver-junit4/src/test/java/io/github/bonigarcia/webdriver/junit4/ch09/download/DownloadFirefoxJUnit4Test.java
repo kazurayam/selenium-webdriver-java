@@ -41,7 +41,6 @@ public class DownloadFirefoxJUnit4Test {
     public void setup() {
         FirefoxOptions options = new FirefoxOptions();
 
-        //targetFolder = new File(".");
         targetFolder =
                 new TestHelper(this.getClass()).getOutputDir().toFile();
 

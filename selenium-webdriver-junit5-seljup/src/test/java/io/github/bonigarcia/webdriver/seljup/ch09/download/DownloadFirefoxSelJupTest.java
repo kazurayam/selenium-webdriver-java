@@ -19,6 +19,7 @@ package io.github.bonigarcia.webdriver.seljup.ch09.download;
 import java.io.File;
 import java.time.Duration;
 
+import com.kazurayam.unittest.TestHelper;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,9 @@ class DownloadFirefoxSelJupTest {
 
     @BeforeEach
     void setup() {
-        targetFolder = new File(".");
+        targetFolder =
+                new TestHelper(this.getClass()).getOutputDir().toFile();
+
         options.addPreference("browser.download.dir",
                 targetFolder.getAbsolutePath());
         options.addPreference("browser.download.folderList", 2);
