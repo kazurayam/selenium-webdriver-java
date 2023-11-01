@@ -16,9 +16,10 @@
  */
 package io.github.bonigarcia.webdriver.junit4.ch09.reporting;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.kazurayam.unittest.TestHelper;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,10 +29,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.openqa.selenium.WebDriver;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReportingJUnit4Test {
 
