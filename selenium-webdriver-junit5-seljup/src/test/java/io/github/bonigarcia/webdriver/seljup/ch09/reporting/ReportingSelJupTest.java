@@ -16,8 +16,10 @@
  */
 package io.github.bonigarcia.webdriver.seljup.ch09.reporting;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.kazurayam.unittest.TestHelper;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,10 +29,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-
-import io.github.bonigarcia.seljup.SeleniumJupiter;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SeleniumJupiter.class)
 class ReportingSelJupTest {
@@ -40,8 +39,11 @@ class ReportingSelJupTest {
     @BeforeAll
     static void setupClass() {
         reports = new ExtentReports();
-        ExtentSparkReporter htmlReporter = new ExtentSparkReporter(
-                "extentReport.html");
+        ExtentSparkReporter htmlReporter =
+                new ExtentSparkReporter(
+                        new TestHelper(ReportingSelJupTest.class)
+                                .resolveOutput("extentReport.html")
+                                .toFile());
         reports.attachReporter(htmlReporter);
     }
 
