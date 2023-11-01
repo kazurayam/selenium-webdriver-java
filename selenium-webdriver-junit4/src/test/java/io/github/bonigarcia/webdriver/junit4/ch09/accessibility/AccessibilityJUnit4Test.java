@@ -16,26 +16,24 @@
  */
 package io.github.bonigarcia.webdriver.junit4.ch09.accessibility;
 
-import static java.lang.invoke.MethodHandles.lookup;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.nio.file.Path;
-import java.util.List;
-
+import com.deque.html.axecore.results.Results;
+import com.deque.html.axecore.results.Rule;
+import com.deque.html.axecore.selenium.AxeBuilder;
+import com.deque.html.axecore.selenium.AxeReporter;
 import com.kazurayam.unittest.TestHelper;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 
-import com.deque.html.axecore.results.Results;
-import com.deque.html.axecore.results.Rule;
-import com.deque.html.axecore.selenium.AxeBuilder;
-import com.deque.html.axecore.selenium.AxeReporter;
+import java.nio.file.Path;
+import java.util.List;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import static java.lang.invoke.MethodHandles.lookup;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class AccessibilityJUnit4Test {
 
@@ -63,7 +61,9 @@ public class AccessibilityJUnit4Test {
         violations.forEach(rule -> {
             log.debug("{}", rule.toString());
         });
-        Path outputFile = new TestHelper(this.getClass()).resolveOutput("testAccessibility");
+        Path outputFile =
+                new TestHelper(this.getClass())
+                        .resolveOutput("testAccessibility");
         AxeReporter.writeResultsToJsonFile(outputFile.toString(), result);
     }
 
