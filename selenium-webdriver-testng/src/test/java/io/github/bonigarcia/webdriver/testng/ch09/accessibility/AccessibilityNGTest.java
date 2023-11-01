@@ -20,8 +20,10 @@ import static java.lang.invoke.MethodHandles.lookup;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.nio.file.Path;
 import java.util.List;
 
+import com.kazurayam.unittest.TestHelper;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.testng.annotations.AfterMethod;
@@ -61,7 +63,10 @@ public class AccessibilityNGTest {
         violations.forEach(rule -> {
             log.debug("{}", rule.toString());
         });
-        AxeReporter.writeResultsToJsonFile("testAccessibility", result);
+        Path outputFile =
+                new TestHelper(this.getClass())
+                        .resolveOutput("testAccessibility");
+        AxeReporter.writeResultsToJsonFile(outputFile.toString(), result);
     }
 
 }
