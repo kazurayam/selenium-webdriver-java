@@ -16,12 +16,22 @@
  */
 package io.github.bonigarcia.webdriver.junit4.ch09.performance;
 
+<<<<<<< HEAD
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 import com.kazurayam.unittest.TestHelper;
+=======
+import com.kazurayam.unittest.TestHelper;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.client.ClientUtil;
+import net.lightbody.bmp.core.har.Har;
+import net.lightbody.bmp.proxy.CaptureType;
+>>>>>>> kazurayam8e
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,12 +40,10 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import net.lightbody.bmp.BrowserMobProxy;
-import net.lightbody.bmp.BrowserMobProxyServer;
-import net.lightbody.bmp.client.ClientUtil;
-import net.lightbody.bmp.core.har.Har;
-import net.lightbody.bmp.proxy.CaptureType;
+import java.io.File;
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class HarCreatorJUnit4Test {
 
@@ -62,8 +70,14 @@ public class HarCreatorJUnit4Test {
     @After
     public void teardown() throws IOException {
         Har har = proxy.getHar();
+<<<<<<< HEAD
         Path harFile = new TestHelper(this.getClass()).resolveOutput("login.har");
         har.writeTo(harFile.toFile());
+=======
+        File harFile = new TestHelper(this.getClass())
+                .resolveOutput("login.har").toFile();
+        har.writeTo(harFile);
+>>>>>>> kazurayam8e
 
         proxy.stop();
         driver.quit();
