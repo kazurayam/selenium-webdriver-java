@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 
+import com.kazurayam.unittest.TestHelper;
 import org.openqa.selenium.Pdf;
 import org.openqa.selenium.PrintsPage;
 import org.openqa.selenium.WebDriver;
@@ -65,7 +66,8 @@ public class PrintEdgeNGTest {
 
         byte[] decodedImg = Base64.getDecoder()
                 .decode(pdfBase64.getBytes(StandardCharsets.UTF_8));
-        Path destinationFile = Paths.get("my-pdf.pdf");
+        Path destinationFile =
+                new TestHelper(this.getClass()).resolveOutput("my-pdf.pdf");
         Files.write(destinationFile, decodedImg);
     }
 

@@ -18,6 +18,7 @@ package io.github.bonigarcia.webdriver.jupiter.ch05.print;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 
+import com.kazurayam.unittest.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,7 +67,8 @@ class PrintChromeJupiterTest {
 
         byte[] decodedImg = Base64.getDecoder()
                 .decode(pdfBase64.getBytes(StandardCharsets.UTF_8));
-        Path destinationFile = Paths.get("my-pdf.pdf");
+        Path destinationFile =
+                new TestHelper(this.getClass()).resolveOutput("my-pdf.pdf");
         Files.write(destinationFile, decodedImg);
     }
 
