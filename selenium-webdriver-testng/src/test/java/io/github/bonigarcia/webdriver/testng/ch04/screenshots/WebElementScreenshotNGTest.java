@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.kazurayam.unittest.TestHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
@@ -61,7 +62,8 @@ public class WebElementScreenshotNGTest {
 
         WebElement form = driver.findElement(By.tagName("form"));
         File screenshot = form.getScreenshotAs(OutputType.FILE);
-        Path destination = Paths.get("webelement-screenshot.png");
+        Path destination = new TestHelper(this.getClass())
+                .resolveOutput("webelement-screenshot.png");
         Files.move(screenshot.toPath(), destination, REPLACE_EXISTING);
 
         assertThat(destination).exists();

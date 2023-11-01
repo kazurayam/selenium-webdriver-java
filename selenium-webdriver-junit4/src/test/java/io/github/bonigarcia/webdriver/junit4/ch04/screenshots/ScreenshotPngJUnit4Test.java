@@ -62,13 +62,8 @@ public class ScreenshotPngJUnit4Test {
         File screenshot = ts.getScreenshotAs(OutputType.FILE);
         log.debug("Screenshot created on {}", screenshot);
 
-<<<<<<< Updated upstream
         Path destination = new TestHelper(this.getClass())
                 .resolveOutput("screenshot.png");
-=======
-        Path destination =
-                new TestHelper(this.getClass()).resolveOutput("screenshot.png");
->>>>>>> Stashed changes
         Files.move(screenshot.toPath(), destination, REPLACE_EXISTING);
         log.debug("Screenshot moved to {}", destination);
 

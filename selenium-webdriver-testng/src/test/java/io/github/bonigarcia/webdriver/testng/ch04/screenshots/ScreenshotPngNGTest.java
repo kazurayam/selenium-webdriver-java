@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.kazurayam.unittest.TestHelper;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -61,7 +62,8 @@ public class ScreenshotPngNGTest {
         File screenshot = ts.getScreenshotAs(OutputType.FILE);
         log.debug("Screenshot created on {}", screenshot);
 
-        Path destination = Paths.get("screenshot.png");
+        Path destination = new TestHelper(this.getClass())
+                .resolveOutput("screenshot.png");
         Files.move(screenshot.toPath(), destination, REPLACE_EXISTING);
         log.debug("Screenshot moved to {}", destination);
 
