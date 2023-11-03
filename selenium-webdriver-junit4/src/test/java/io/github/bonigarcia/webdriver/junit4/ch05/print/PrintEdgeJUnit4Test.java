@@ -16,10 +16,12 @@
  */
 package io.github.bonigarcia.webdriver.junit4.ch05.print;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.webdriver.junit4.TestOutputOrganizerFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.Pdf;
 import org.openqa.selenium.PrintsPage;
@@ -37,7 +39,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PrintEdgeJUnit4Test {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
+
+    @BeforeClass
+    public static void setupClass() {
+        too = TestOutputOrganizerFactory.create(PrintEdgeJUnit4Test.class);
+    }
 
     @Before
     public void setup() {
@@ -64,8 +73,7 @@ public class PrintEdgeJUnit4Test {
 
         byte[] decodedImg = Base64.getDecoder()
                 .decode(pdfBase64.getBytes(StandardCharsets.UTF_8));
-        Path destinationFile =
-                new TestHelper(this.getClass()).resolveOutput("my-pdf.pdf");
+        Path destinationFile = too.resolveOutput("my-pdf.pdf");
         Files.write(destinationFile, decodedImg);
     }
 

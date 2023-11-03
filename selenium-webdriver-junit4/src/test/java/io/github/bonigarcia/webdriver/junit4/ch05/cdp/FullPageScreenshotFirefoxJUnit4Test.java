@@ -23,9 +23,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.webdriver.junit4.TestOutputOrganizerFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
@@ -38,7 +40,14 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class FullPageScreenshotFirefoxJUnit4Test {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
+
+    @BeforeClass
+    public static void setupClass() {
+        too = TestOutputOrganizerFactory.create(FullPageScreenshotFirefoxJUnit4Test.class);
+    }
 
     @Before
     public void setup() {
@@ -60,9 +69,7 @@ public class FullPageScreenshotFirefoxJUnit4Test {
 
         byte[] imageBytes = ((FirefoxDriver) driver)
                 .getFullPageScreenshotAs(OutputType.BYTES);
-        Path destination =
-                new TestHelper(this.getClass())
-                        .resolveOutput("fullpage-screenshot-firefox.png");
+        Path destination = too.resolveOutput("fullpage-screenshot-firefox.png");
         Files.write(destination, imageBytes);
 
         assertThat(destination).exists();

@@ -16,7 +16,8 @@
  */
 package io.github.bonigarcia.webdriver.testng.ch04.event_listeners;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.webdriver.testng.TestOutputOrganizerFactory;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -59,9 +60,9 @@ public class MyEventListener implements WebDriverListener {
                 "yyyy.MM.dd_HH.mm.ss.SSS");
         String screenshotFileName = String.format("%s-%s.png",
                 dateFormat.format(today), sessionId.toString());
-        Path destination =
-                new TestHelper(this.getClass())
-                        .resolveOutput(screenshotFileName);
+        TestOutputOrganizer too =
+                TestOutputOrganizerFactory.create(MyEventListener.class);
+        Path destination = too.resolveOutput(screenshotFileName);
 
         try {
             Files.move(screenshot.toPath(), destination);

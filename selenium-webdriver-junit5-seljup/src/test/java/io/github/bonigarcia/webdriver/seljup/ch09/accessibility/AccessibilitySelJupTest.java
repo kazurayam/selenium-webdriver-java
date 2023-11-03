@@ -23,7 +23,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.nio.file.Path;
 import java.util.List;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.webdriver.seljup.TestOutputOrganizerFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,6 +43,13 @@ class AccessibilitySelJupTest {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    static TestOutputOrganizer too;
+
+    @BeforeAll
+    static void setupClass() {
+        too = TestOutputOrganizerFactory.create(AccessibilitySelJupTest.class);
+    }
+
     @Test
     void testAccessibility(ChromeDriver driver) {
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
@@ -51,9 +60,7 @@ class AccessibilitySelJupTest {
         violations.forEach(rule -> {
             log.debug("{}", rule.toString());
         });
-        Path outputFile =
-                new TestHelper(this.getClass())
-                        .resolveOutput("testAccessibility");
+        Path outputFile = too.resolveOutput("testAccessibility");
         AxeReporter.writeResultsToJsonFile(outputFile.toString(), result);
     }
 

@@ -20,10 +20,12 @@ import com.deque.html.axecore.results.Results;
 import com.deque.html.axecore.results.Rule;
 import com.deque.html.axecore.selenium.AxeBuilder;
 import com.deque.html.axecore.selenium.AxeReporter;
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.webdriver.junit4.TestOutputOrganizerFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -39,7 +41,14 @@ public class AccessibilityJUnit4Test {
 
     final Logger log = getLogger(lookup().lookupClass());
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
+
+    @BeforeClass
+    public static void setupClass() {
+        too = TestOutputOrganizerFactory.create(AccessibilityJUnit4Test.class);
+    }
 
     @Before
     public void setup() {
@@ -61,9 +70,7 @@ public class AccessibilityJUnit4Test {
         violations.forEach(rule -> {
             log.debug("{}", rule.toString());
         });
-        Path outputFile =
-                new TestHelper(this.getClass())
-                        .resolveOutput("testAccessibility");
+        Path outputFile = too.resolveOutput("testAccessibility");
         AxeReporter.writeResultsToJsonFile(outputFile.toString(), result);
     }
 

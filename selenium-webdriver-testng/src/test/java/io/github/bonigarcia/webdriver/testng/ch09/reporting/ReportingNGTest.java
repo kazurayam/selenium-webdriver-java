@@ -18,8 +18,9 @@ package io.github.bonigarcia.webdriver.testng.ch09.reporting;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.webdriver.testng.TestOutputOrganizerFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -33,18 +34,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReportingNGTest {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
 
     ExtentReports reports;
 
     @BeforeClass
     public void setupClass() {
+        too = TestOutputOrganizerFactory.create(ReportingNGTest.class);
         reports = new ExtentReports();
         ExtentSparkReporter htmlReporter =
                 new ExtentSparkReporter(
-                        new TestHelper(ReportingNGTest.class)
-                                .resolveOutput("extentReport.html")
-                                .toFile());
+                        too.resolveOutput("extentReport.html").toFile());
         reports.attachReporter(htmlReporter);
     }
 

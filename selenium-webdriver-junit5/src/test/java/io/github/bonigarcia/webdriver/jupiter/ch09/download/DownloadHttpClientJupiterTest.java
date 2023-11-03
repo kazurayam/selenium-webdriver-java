@@ -22,7 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.webdriver.jupiter.TestOutputOrganizerFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
@@ -32,6 +33,7 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -42,17 +44,20 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 class DownloadHttpClientJupiterTest {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
 
     Path targetFolder;
 
+    @BeforeAll
+    static void setupClass() {
+        too = TestOutputOrganizerFactory.create(DownloadHttpClientJupiterTest.class);
+    }
+
     @BeforeEach
     void setup() {
-
-        targetFolder =
-                new TestHelper(this.getClass())
-                        .getProjectDirViaClasspath()
-                        .resolve("test-output/" + this.getClass().getSimpleName());
+        targetFolder = too.getOutputSubDirectory();
         driver = WebDriverManager.chromedriver().create();
     }
 

@@ -16,15 +16,9 @@
  */
 package io.github.bonigarcia.webdriver.testng.ch05.cdp;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.Duration;
-
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.webdriver.testng.TestOutputOrganizerFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
@@ -32,14 +26,27 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FullPageScreenshotFirefoxNGTest {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
+
+    @BeforeClass
+    public void setupClass() {
+        too = TestOutputOrganizerFactory.create(FullPageScreenshotFirefoxNGTest.class);
+    }
 
     @BeforeMethod
     public void setup() {
@@ -62,8 +69,7 @@ public class FullPageScreenshotFirefoxNGTest {
         byte[] imageBytes = ((FirefoxDriver) driver)
                 .getFullPageScreenshotAs(OutputType.BYTES);
         Path destination =
-                new TestHelper(this.getClass())
-                        .resolveOutput("fullpage-screenshot-firefox.png");
+                too.resolveOutput("fullpage-screenshot-firefox.png");
         Files.write(destination, imageBytes);
 
         assertThat(destination).exists();

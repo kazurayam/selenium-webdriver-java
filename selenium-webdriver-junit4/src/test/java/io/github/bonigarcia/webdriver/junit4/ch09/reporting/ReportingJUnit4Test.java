@@ -18,8 +18,9 @@ package io.github.bonigarcia.webdriver.junit4.ch09.reporting;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.webdriver.junit4.TestOutputOrganizerFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,18 +37,19 @@ public class ReportingJUnit4Test {
     @Rule
     public TestName name = new TestName();
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
 
     static ExtentReports reports;
 
     @BeforeClass
     public static void setupClass() {
+        too = TestOutputOrganizerFactory.create(ReportingJUnit4Test.class);
         reports = new ExtentReports();
         ExtentSparkReporter htmlReporter =
                 new ExtentSparkReporter(
-                        new TestHelper(ReportingJUnit4Test.class)
-                                .resolveOutput("extentReport.html")
-                                .toFile());
+                        too.resolveOutput("extentReport.html").toFile());
         reports.attachReporter(htmlReporter);
     }
 

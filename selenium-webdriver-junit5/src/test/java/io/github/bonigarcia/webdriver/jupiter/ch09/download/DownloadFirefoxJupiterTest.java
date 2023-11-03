@@ -19,10 +19,12 @@ package io.github.bonigarcia.webdriver.jupiter.ch09.download;
 import java.io.File;
 import java.time.Duration;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.webdriver.jupiter.TestOutputOrganizerFactory;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionFactory;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -33,17 +35,21 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 class DownloadFirefoxJupiterTest {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
 
     File targetFolder;
 
+    @BeforeAll
+    static void setupClass() {
+        too = TestOutputOrganizerFactory.create(DownloadFirefoxJupiterTest.class);
+    }
+
     @BeforeEach
     void setup() {
         FirefoxOptions options = new FirefoxOptions();
-
-        targetFolder =
-                new TestHelper(this.getClass()).getOutputDir().toFile();
-
+        targetFolder = too.getOutputSubDirectory().toFile();
         options.addPreference("browser.download.dir",
                 targetFolder.getAbsolutePath());
         options.addPreference("browser.download.folderList", 2);

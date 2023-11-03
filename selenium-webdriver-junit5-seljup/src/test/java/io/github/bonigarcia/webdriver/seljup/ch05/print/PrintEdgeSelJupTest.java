@@ -16,9 +16,11 @@
  */
 package io.github.bonigarcia.webdriver.seljup.ch05.print;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.seljup.Arguments;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
+import io.github.bonigarcia.webdriver.seljup.TestOutputOrganizerFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Pdf;
@@ -37,6 +39,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SeleniumJupiter.class)
 class PrintEdgeSelJupTest {
 
+    static TestOutputOrganizer too;
+
+    @BeforeAll
+    static void setupClass() {
+        too = TestOutputOrganizerFactory.create(PrintEdgeSelJupTest.class);
+    }
+
     @Test
     void testPrint(@Arguments("--headless") EdgeDriver driver)
             throws IOException {
@@ -51,7 +60,7 @@ class PrintEdgeSelJupTest {
         byte[] decodedImg = Base64.getDecoder()
                 .decode(pdfBase64.getBytes(StandardCharsets.UTF_8));
         Path destinationFile =
-                new TestHelper(this.getClass()).resolveOutput("my-pdf.pdf");
+                too.resolveOutput("my-pdf.pdf");
         Files.write(destinationFile, decodedImg);
     }
 

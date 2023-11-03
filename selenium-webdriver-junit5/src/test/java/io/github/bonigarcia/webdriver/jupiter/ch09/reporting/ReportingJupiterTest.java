@@ -18,8 +18,9 @@ package io.github.bonigarcia.webdriver.jupiter.ch09.reporting;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.webdriver.jupiter.TestOutputOrganizerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,18 +33,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ReportingJupiterTest {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
 
     static ExtentReports reports;
 
     @BeforeAll
     static void setupClass() {
+        too = TestOutputOrganizerFactory.create(ReportingJupiterTest.class);
         reports = new ExtentReports();
         ExtentSparkReporter htmlReporter =
                 new ExtentSparkReporter(
-                        new TestHelper(ReportingJupiterTest.class)
-                                .resolveOutput("extentReport.html")
-                                .toFile());
+                        too.resolveOutput("extentReport.html").toFile());
         reports.attachReporter(htmlReporter);
     }
 

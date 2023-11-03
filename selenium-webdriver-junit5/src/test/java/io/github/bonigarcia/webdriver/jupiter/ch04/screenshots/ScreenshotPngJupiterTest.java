@@ -27,8 +27,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.webdriver.jupiter.TestOutputOrganizerFactory;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.OutputType;
@@ -42,7 +44,14 @@ class ScreenshotPngJupiterTest {
 
     static final Logger log = getLogger(lookup().lookupClass());
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
+
+    @BeforeAll
+    static void setupClass() {
+        too = TestOutputOrganizerFactory.create(ScreenshotPngJupiterTest.class);
+    }
 
     @BeforeEach
     void setup() {
@@ -62,8 +71,7 @@ class ScreenshotPngJupiterTest {
         File screenshot = ts.getScreenshotAs(OutputType.FILE);
         log.debug("Screenshot created on {}", screenshot);
 
-        Path destination = new TestHelper(this.getClass())
-                .resolveOutput("screenshot.png");
+        Path destination = too.resolveOutput("screenshot.png");
 
         Files.move(screenshot.toPath(), destination, REPLACE_EXISTING);
         log.debug("Screenshot moved to {}", destination);

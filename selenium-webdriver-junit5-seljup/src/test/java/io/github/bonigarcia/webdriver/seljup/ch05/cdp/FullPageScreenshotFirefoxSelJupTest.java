@@ -16,8 +16,10 @@
  */
 package io.github.bonigarcia.webdriver.seljup.ch05.cdp;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
+import io.github.bonigarcia.webdriver.seljup.TestOutputOrganizerFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -36,6 +38,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SeleniumJupiter.class)
 class FullPageScreenshotFirefoxSelJupTest {
 
+    static TestOutputOrganizer too;
+
+    @BeforeAll
+    static void setupClass() {
+        too = TestOutputOrganizerFactory
+                .create(FullPageScreenshotFirefoxSelJupTest.class);
+    }
+
     @Test
     void testFullPageScreenshotFirefox(FirefoxDriver driver)
             throws IOException {
@@ -48,8 +58,7 @@ class FullPageScreenshotFirefoxSelJupTest {
         byte[] imageBytes = ((FirefoxDriver) driver)
                 .getFullPageScreenshotAs(OutputType.BYTES);
         Path destination =
-                new TestHelper(this.getClass())
-                        .resolveOutput("fullpage-screenshot-firefox.png");
+                too.resolveOutput("fullpage-screenshot-firefox.png");
         Files.write(destination, imageBytes);
 
         assertThat(destination).exists();

@@ -102,7 +102,7 @@ ext {
     appiumVersion = "9.0.0"
     restAssuredVersion = "5.3.1"
 
-    unittesthelperVersion = "0.1.2"
+    unittesthelperVersion = "0.2.2"
 }
 
 dependencies {
@@ -154,4 +154,20 @@ dependencies {
     testImplementation 'org.seleniumhq.selenium:selenium-devtools-v114:4.12.1'
 
     testImplementation("com.kazurayam:unittest-helper:${unittesthelperVersion}")
+}
+
+task testWithOutputs(type: Test) {
+    include '**/ch04/event_listeners/MyEventListener*'
+    include '**/ch04/screenshots/ScreenshotPngJUnit4Test*'
+    include '**/ch04/screenshots/WebElementScreenshotJUnit4Test*'
+    include '**/ch05/cdp/FullPageScreenshotChromeJUnit4Test*'
+    include '**/ch05/cdp/FullPageScreenshotFirefoxJUnit4Test*'
+    include '**/ch05/print/PrintChromeJUnit4Test*'
+    include '**/ch05/print/PrintEdgeJUnit4Test*'
+    include '**/ch05/print/PrintFirefoxJUnit4Test*'
+    include '**/ch09/accessibility/AccessibilityJUnit4Test*'
+    include '**/ch09/download/DownloadFirefoxJUnit4Test*'
+    include '**/ch09/download/DownloadHttpClientJUnit4Test*'
+    include '**/ch09/performance/HarCreatorJUnit4Test*'
+    include '**/ch09/reporting/ReportingJUnit4Test*'
 }

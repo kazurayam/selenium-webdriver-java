@@ -16,8 +16,10 @@
  */
 package io.github.bonigarcia.webdriver.seljup.ch05.cdp;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.seljup.SeleniumJupiter;
+import io.github.bonigarcia.webdriver.seljup.TestOutputOrganizerFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -42,6 +44,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SeleniumJupiter.class)
 class FullPageScreenshotChromeSelJupTest {
 
+    static TestOutputOrganizer too;
+
+    @BeforeAll
+    static void setupClass() {
+        too = TestOutputOrganizerFactory
+                .create(FullPageScreenshotChromeSelJupTest.class);
+    }
+
     @Test
     void testFullPageScreenshotChrome(ChromeDriver driver, DevTools devTools)
             throws IOException {
@@ -61,8 +71,7 @@ class FullPageScreenshotChromeSelJupTest {
                         Optional.empty(), Optional.of(true),
                         Optional.of(false)));
         Path destination =
-                new TestHelper(this.getClass())
-                        .resolveOutput("fullpage-screenshot-chrome.png");
+                too.resolveOutput("fullpage-screenshot-chrome.png");
         Files.write(destination, Base64.getDecoder().decode(screenshotBase64));
 
         assertThat(destination).exists();

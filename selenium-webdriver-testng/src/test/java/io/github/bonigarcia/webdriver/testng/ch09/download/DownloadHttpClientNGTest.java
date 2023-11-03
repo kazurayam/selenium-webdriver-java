@@ -21,7 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.io.IOException;
 
-import com.kazurayam.unittest.TestHelper;
+import com.kazurayam.unittest.TestOutputOrganizer;
+import io.github.bonigarcia.webdriver.testng.TestOutputOrganizerFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
@@ -34,6 +35,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -42,17 +44,20 @@ import java.nio.file.Path;
 
 public class DownloadHttpClientNGTest {
 
+    static TestOutputOrganizer too;
+
     WebDriver driver;
 
     Path targetFolder;
 
+    @BeforeClass
+    static void setupClass() {
+        too = TestOutputOrganizerFactory.create(DownloadHttpClientNGTest.class);
+    }
+
     @BeforeMethod
     public void setup() {
-        targetFolder =
-                new TestHelper(this.getClass())
-                        .getProjectDirViaClasspath()
-                        .resolve("test-output/" + this.getClass().getSimpleName());
-
+        targetFolder = too.getOutputSubDirectory();
         driver = WebDriverManager.chromedriver().create();
     }
 
