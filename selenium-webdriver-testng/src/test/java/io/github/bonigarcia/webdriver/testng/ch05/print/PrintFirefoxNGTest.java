@@ -19,12 +19,12 @@ package io.github.bonigarcia.webdriver.testng.ch05.print;
 import com.kazurayam.unittest.TestOutputOrganizer;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.webdriver.testng.TestOutputOrganizerFactory;
-import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.Pdf;
 import org.openqa.selenium.PrintsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.print.PrintOptions;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -42,7 +42,7 @@ public class PrintFirefoxNGTest {
 
     WebDriver driver;
 
-    @BeforeAll
+    @BeforeClass
     static void setupClass() {
         too = TestOutputOrganizerFactory.create(PrintFirefoxNGTest.class);
     }

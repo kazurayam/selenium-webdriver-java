@@ -52,7 +52,7 @@ class FullPageScreenshotChromeJupiterTest {
     DevTools devTools;
 
     @BeforeAll
-    public void setupClass() {
+    public static void setupClass() {
         too = TestOutputOrganizerFactory.create(FullPageScreenshotChromeJupiterTest.class);
     }
 
