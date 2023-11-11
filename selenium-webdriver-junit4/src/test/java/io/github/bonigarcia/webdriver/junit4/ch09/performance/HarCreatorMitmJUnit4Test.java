@@ -1,16 +1,14 @@
-package io.github.bonigarcia.webdriver.seljup.ch09.performance;
+package io.github.bonigarcia.webdriver.junit4.ch09.performance;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
 import io.appium.mitmproxy.InterceptedMessage;
 import io.appium.mitmproxy.MitmproxyJava;
-import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.webdriver.seljup.TestOutputOrganizerFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import io.github.bonigarcia.webdriver.junit4.TestOutputOrganizerFactory;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -33,13 +31,9 @@ import java.util.concurrent.TimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * <a href="https://appiumpro.com/editions/65-capturing-network-traffic-in-java-with-appium">...</a>
- */
-@ExtendWith(SeleniumJupiter.class)
-public class CapturingNetworkTrafficMitmSelJupTest {
+public class HarCreatorMitmJUnit4Test {
 
-    static Logger log = LoggerFactory.getLogger(CapturingNetworkTrafficMitmSelJupTest.class);
+    static Logger log = LoggerFactory.getLogger(HarCreatorMitmJUnit4Test.class);
 
     static TestOutputOrganizer too;
 
@@ -58,13 +52,13 @@ public class CapturingNetworkTrafficMitmSelJupTest {
 
     private Path harPath;
 
-    @BeforeAll
-    static void setupClass() {
-        too = TestOutputOrganizerFactory.create(CapturingNetworkTrafficMitmSelJupTest.class);
+    @BeforeClass
+    public static void setupClass() {
+        too = TestOutputOrganizerFactory.create(HarCreatorMitmJUnit4Test.class);
     }
 
-    @BeforeEach
-    void setup() throws IOException, TimeoutException {
+    @Before
+    public void setup() throws IOException, TimeoutException {
         messages = new ArrayList<>();
 
         // start Mitmproxy process with HAR support
@@ -119,7 +113,7 @@ public class CapturingNetworkTrafficMitmSelJupTest {
      * @throws IOException anything may happen
      */
     @Test
-    void testCaptureNetworkTraffic() throws IOException {
+    public void testCaptureNetworkTraffic() throws IOException {
         // (11)
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/login-form.html");
         driver.findElement(By.id("username")).sendKeys("user");
@@ -160,8 +154,8 @@ public class CapturingNetworkTrafficMitmSelJupTest {
      * Stop the browser, stop the proxy
      * @throws InterruptedException any interruption
      */
-    @AfterEach
-    void tearDown() throws InterruptedException {
+    @After
+    public void tearDown() throws InterruptedException {
         if (driver != null) {
             driver.quit();
         }

@@ -1,20 +1,20 @@
-package io.github.bonigarcia.webdriver.testng.ch09.performance;
+package io.github.bonigarcia.webdriver.jupiter.ch09.performance;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
 import io.appium.mitmproxy.InterceptedMessage;
 import io.appium.mitmproxy.MitmproxyJava;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.webdriver.testng.TestOutputOrganizerFactory;
+import io.github.bonigarcia.webdriver.jupiter.TestOutputOrganizerFactory;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -34,9 +34,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * <a href="https://appiumpro.com/editions/65-capturing-network-traffic-in-java-with-appium">...</a>
  */
-public class CapturingNetworkTrafficMitmNGTest {
+public class HarCreatorMitmJupiterTest {
 
-    static Logger log = LoggerFactory.getLogger(CapturingNetworkTrafficMitmNGTest.class);
+    static Logger log = LoggerFactory.getLogger(HarCreatorMitmJupiterTest.class);
 
     static TestOutputOrganizer too;
 
@@ -55,12 +55,12 @@ public class CapturingNetworkTrafficMitmNGTest {
 
     private Path harPath;
 
-    @BeforeClass
+    @BeforeAll
     static void setupClass() {
-        too = TestOutputOrganizerFactory.create(CapturingNetworkTrafficMitmNGTest.class);
+        too = TestOutputOrganizerFactory.create(HarCreatorMitmJupiterTest.class);
     }
 
-    @BeforeMethod
+    @BeforeEach
     void setup() throws IOException, TimeoutException {
         messages = new ArrayList<>();
 
@@ -157,7 +157,7 @@ public class CapturingNetworkTrafficMitmNGTest {
      * Stop the browser, stop the proxy
      * @throws InterruptedException any interruption
      */
-    @AfterMethod
+    @AfterEach
     void tearDown() throws InterruptedException {
         if (driver != null) {
             driver.quit();
