@@ -22,6 +22,7 @@
         <awaitility.version>4.2.0</awaitility.version>
 
         <browsermob.version>2.1.6-SNAPSHOT</browsermob.version>
+        <mitm.version>2.0.2</mitm.version>
 
         <zapclient.version>1.12.0</zapclient.version>
         <axel.version>4.8.0</axel.version>
@@ -256,6 +257,12 @@
             <groupId>com.kazurayam.</groupId>
             <artifactId>unittest-helper</artifactId>
             <version>${unittest-helper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>mitmproxy-java</artifactId>
+            <version>${mitm.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

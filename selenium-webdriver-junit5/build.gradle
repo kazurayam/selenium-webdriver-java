@@ -103,6 +103,7 @@ ext {
     restAssuredVersion = "5.3.1"
 
     unittesthelperVersion = "0.2.2"
+    mitmVersion = "2.0.2"
 }
 
 dependencies {
@@ -153,6 +154,7 @@ dependencies {
     testImplementation 'org.seleniumhq.selenium:selenium-devtools-v114:4.12.1'
 
     testImplementation("com.kazurayam:unittest-helper:${unittesthelperVersion}")
+    testImplementation("io.appium:mitmproxy-java:${mitmVersion}")
 }
 
 /*
