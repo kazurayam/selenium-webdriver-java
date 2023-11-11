@@ -1,14 +1,16 @@
-package io.github.bonigarcia.webdriver.jupiter.ch09.performance;
+package io.github.bonigarcia.webdriver.seljup.ch09.performance;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
 import io.appium.mitmproxy.InterceptedMessage;
 import io.appium.mitmproxy.MitmproxyJava;
+import io.github.bonigarcia.seljup.SeleniumJupiter;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.webdriver.jupiter.TestOutputOrganizerFactory;
+import io.github.bonigarcia.webdriver.seljup.TestOutputOrganizerFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -34,9 +36,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * <a href="https://appiumpro.com/editions/65-capturing-network-traffic-in-java-with-appium">...</a>
  */
-public class CapturingNetworkTrafficMitmJupiterTest {
+@ExtendWith(SeleniumJupiter.class)
+public class HarCreatorMitmSelJupTest {
 
-    static Logger log = LoggerFactory.getLogger(CapturingNetworkTrafficMitmJupiterTest.class);
+    static Logger log = LoggerFactory.getLogger(HarCreatorMitmSelJupTest.class);
 
     static TestOutputOrganizer too;
 
@@ -57,7 +60,7 @@ public class CapturingNetworkTrafficMitmJupiterTest {
 
     @BeforeAll
     static void setupClass() {
-        too = TestOutputOrganizerFactory.create(CapturingNetworkTrafficMitmJupiterTest.class);
+        too = TestOutputOrganizerFactory.create(HarCreatorMitmSelJupTest.class);
     }
 
     @BeforeEach
